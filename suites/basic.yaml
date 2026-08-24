@@ -1,0 +1,17 @@
+name: basic
+cases:
+  - id: json_simple
+    prompt: "Return just JSON with fields name and age for Jan"
+    scorers:
+      - type: json_valid
+      - type: json_field
+        field: name
+        equals: "Jan"
+
+  - id: capital
+    prompt: "Answer in one word: the capital of Poland"
+    scorers:
+      - type: contains
+        value: "Warsaw"
+      - type: max_words
+        value: 1
