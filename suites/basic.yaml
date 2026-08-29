@@ -6,7 +6,7 @@ cases:
       - type: json_valid
       - type: json_field
         field: name
-        equals: "Jan"
+        value: "Jan"
 
   - id: capital
     prompt: "Answer in one word: the capital of Poland"
