@@ -26,24 +26,18 @@ def load_suite(path: str):
     with open(path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
     cases = []
-
-    client = get_client()
     for raw in data["cases"]:
-        case = TestCase(id=cases["id"], prompt=cases["prompt"], scorers=cases["scorers"])
-        if (case.scorers == "value"):
-            cases.append(case)
-        elif (case.scorers == "values"):
-            cases.extend(case)
-
-        response = client.responses.create(model="gpt-5.4-mini", input=case.prompt)
+        case = TestCase(id=raw["id"], prompt=raw["prompt"], scorers=raw["scorers"])
+        cases.append(case)
     return cases
 
-def compare_results(response: str, scorer: dict) -> list:
-    passed = cases["case"][id]["scorers"] == response.output_text.strip()
-    if passed:
-        print(f"{GREEN}PASS{RESET}")
-    else:
-        print(f"{RED}FAIL{RESET}")
+def score_contains(response: str, scorers: dict):
+    ok = scorers["value"].lower() in response.lower()
+    return ok, {"looked_for": scorers["value"]}
+
+SCORERS = {
+    "contains": score_contains
+}
 
 
 
