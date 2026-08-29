@@ -1,12 +1,12 @@
 name: basic
 cases:
-  - id: json_simple
-    prompt: "Return just JSON with fields name and age for Jan"
+  - id: math_simple
+    prompt: "What's 3x21? Answer with just the number"
     scorers:
-      - type: json_valid
-      - type: json_field
-        field: name
-        value: "Jan"
+      - type: contains
+        value: "63"
+      - type: max_words
+        value: 1
 
   - id: capital
     prompt: "Answer in one word: the capital of Poland"
@@ -15,3 +15,33 @@ cases:
         value: "Warsaw"
       - type: max_words
         value: 1
+
+  - id: crypto
+    prompt: "What's the most popular crypto currency?"
+    scorers:
+      - type: contains
+        values:
+          - "BTC"
+          - "Bitcoin"
+
+  - id: neighbors
+    prompt: "How many countries is Poland neighboring with?"
+    scorers:
+      - type: contains
+        values: 
+          - 7
+          - "seven"
+
+  - id: chessboard
+    prompt: "How many fields does a chessboard have?"
+    scorers:
+      - type: contains
+        values:
+          - 64
+          - "sixty-four"
+
+  - id: most_dangerous_polish_spider
+    prompt: "What's the most dangerous spider in Poland?"
+    scorers:
+      - type: contains
+        value: "sac spider"
