@@ -40,8 +40,8 @@ cases:
           - 64
           - "sixty-four"
 
-  - id: most_dangerous_polish_spider
-    prompt: "What's the most dangerous spider in Poland?"
+  - id: most_dangerous_spider
+    prompt: "What's the most dangerous spider in the world?"
     scorers:
       - type: contains
-        value: "sac spider"
+        value: "black widow"
