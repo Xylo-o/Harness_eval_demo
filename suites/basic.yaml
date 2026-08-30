@@ -29,7 +29,7 @@ cases:
     scorers:
       - type: contains
         values: 
-          - 7
+          - "7"
           - "seven"
 
   - id: chessboard
@@ -37,7 +37,7 @@ cases:
     scorers:
       - type: contains
         values:
-          - 64
+          - "64"
           - "sixty-four"
 
   - id: most_dangerous_spider
