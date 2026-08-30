@@ -19,7 +19,7 @@ cases:
   - id: crypto
     prompt: "What's the most popular crypto currency?"
     scorers:
-      - type: contains
+      - type: contains_any
         values:
           - "BTC"
           - "Bitcoin"
@@ -27,7 +27,7 @@ cases:
   - id: neighbors
     prompt: "How many countries is Poland neighboring with?"
     scorers:
-      - type: contains
+      - type: contains_any
         values: 
           - "7"
           - "seven"
@@ -35,7 +35,7 @@ cases:
   - id: chessboard
     prompt: "How many fields does a chessboard have?"
     scorers:
-      - type: contains
+      - type: contains_any
         values:
           - "64"
           - "sixty-four"
