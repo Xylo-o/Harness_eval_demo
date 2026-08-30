@@ -1,7 +1,12 @@
-from harness.suite import TestCase
-from harness.scorers import SCORERS
+from .scorers import SCORERS
+from .providers import get_client
+from .suite import load_suite
 
-def runner(case: TestCase):
+provider = get_client()
+suite = load_suite("suites/basic.yaml")
+
+def runner():
+    results = []
     for case in suite.cases:
         response = provider.complete(case.prompt)
         for cfg in case.scorers:
