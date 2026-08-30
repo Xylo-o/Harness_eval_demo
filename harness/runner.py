@@ -12,3 +12,4 @@ def runner():
         for cfg in case.scorers:
             passed, detail = SCORERS[cfg["type"]](response.text, cfg)
             results.append((case.id, cfg["type"], passed, detail))
+    return results
