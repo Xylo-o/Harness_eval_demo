@@ -1,11 +1,11 @@
+from .providers import OpenAIProvider
 from .scorers import SCORERS
-from .providers import get_client
 from .suite import load_suite
 
-provider = get_client()
-suite = load_suite("suites/basic.yaml")
 
-def runner():
+def runner(model: str = "gpt-5.4-mini"):
+    provider = OpenAIProvider(model=model)
+    suite = load_suite("suites/basic.yaml")
     results = []
     for case in suite.cases:
         response = provider.complete(case.prompt)
