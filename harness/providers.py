@@ -1,19 +1,22 @@
 import os
+import time
 from dataclasses import dataclass
-from types import SimpleNamespace
-
 from dotenv import load_dotenv
 from openai import OpenAI
-
 from .cache import get, put
 
 load_dotenv()
-
 
 def get_client():
     api_key = os.getenv("OPENAI_API_KEY")
     return OpenAI(api_key=api_key)
 
+@dataclass
+class ModelResponse:
+    text: str
+    latency_ms: int
+    tokens_in: int
+    tokens_out: int
 
 @dataclass
 class OpenAIProvider:
@@ -22,16 +25,20 @@ class OpenAIProvider:
     def complete(self, prompt: str):
         cached = get(self.model, prompt)
         if cached is not None:
-            return SimpleNamespace(text=cached.get("text", str(cached)))
+            return ModelResponse(text=cached.get("text", str(cached)))
 
         client = get_client()
+        start = time.time()
         response = client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
         )
-
+        stop = time.time()
         text = response.choices[0].message.content
+        latency = stop - start
+        tokens_in = response.usage.prompt_tokens
+        tokens_out = response.usage.completion_tokens
         payload = {"text": text}
         put(self.model, prompt, payload)
-        return SimpleNamespace(text=text)
+        return ModelResponse(text=text, latency_ms=latency, tokens_in=tokens_in, tokens_out=tokens_out)
 
