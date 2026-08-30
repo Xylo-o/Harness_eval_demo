@@ -1,17 +1,32 @@
+GREEN = "\033[32m"
+RED = "\033[31m"
+RESET = "\033[0m"
 
 def score_contains(response: str, config: dict):
     ok = config["value"].lower() in response.lower()
+    if ok:
+        print(f"{GREEN}PASS{RESET}")
+    else:
+        print(f"{RED}FAIL{RESET}")
     return ok, {"looked_for": config["value"]}
 
 def score_contains_any(response: str, config: dict):
     values = config.get("values", [])
     ok = any(str(value).lower() in response.lower() for value in values)
+    if ok:
+        print(f"{GREEN}PASS{RESET}")
+    else:
+        print(f"{RED}FAIL{RESET}")
     return ok, {"looked_for_any": [str(value) for value in values]}
 
 
 def score_max_words(response: str, config: dict):
     max_words = int(config["value"])
     ok = len(response.strip().split()) <= max_words
+    if ok:
+        print(f"{GREEN}PASS{RESET}")
+    else:
+        print(f"{RED}FAIL{RESET}")
     return ok, {"looked_if_exceeded": max_words}
 
 SCORERS = {

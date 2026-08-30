@@ -25,7 +25,7 @@ class OpenAIProvider:
     def complete(self, prompt: str):
         cached = get(self.model, prompt)
         if cached is not None:
-            return ModelResponse(text=cached.get("text", str(cached)))
+            return ModelResponse(text=cached.get("text"), latency_ms=cached.get("latency"), tokens_in=cached.get("tokens_in"), tokens_out=cached.get("tokens_out"))
 
         client = get_client()
         start = time.time()
