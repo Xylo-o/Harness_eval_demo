@@ -3,9 +3,8 @@ from .scorers import SCORERS
 from .suite import load_suite
 
 
-def runner(model: str = "gpt-5.4-mini"):
+def runner(suite: str, model: str):
     provider = OpenAIProvider(model=model)
-    suite = load_suite("suites/basic.yaml")
     results = []
     for case in suite.cases:
         response = provider.complete(case.prompt)

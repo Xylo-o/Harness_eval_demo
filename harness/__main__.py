@@ -1,10 +1,5 @@
-import json
-from pathlib import Path
-from .runner import runner
+from harness.cli import main
 
-
-if __name__ == "__main__":
-    runner()
-    print("Program finished")
+main()
 
 
