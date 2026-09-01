@@ -5,6 +5,6 @@ from .runner import runner
 
 if __name__ == "__main__":
     runner()
-    print(f"Program finished")
+    print("Program finished")
 
 
