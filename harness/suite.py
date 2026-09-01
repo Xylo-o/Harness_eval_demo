@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass
 class Suite:
     name: str
-    cases: str
+    cases: list
 
 @dataclass
 class TestCase:

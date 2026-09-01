@@ -1,6 +1,5 @@
 from .providers import OpenAIProvider
 from .scorers import SCORERS
-from .suite import load_suite
 
 
 def runner(suite: str, model: str):
