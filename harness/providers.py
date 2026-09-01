@@ -28,14 +28,14 @@ class OpenAIProvider:
             return ModelResponse(text=cached.get("text"), latency_ms=cached.get("latency"), tokens_in=cached.get("tokens_in"), tokens_out=cached.get("tokens_out"))
 
         client = get_client()
-        start = time.time()
+        start = time.perf_counter()
         response = client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
         )
-        stop = time.time()
+        stop = time.perf_counter()
         text = response.choices[0].message.content
-        latency = stop - start
+        latency = (stop - start) * 1000
         tokens_in = response.usage.prompt_tokens
         tokens_out = response.usage.completion_tokens
         payload = {"text": text}
