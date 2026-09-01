@@ -1,5 +1,16 @@
 import yaml
-from .__init__ import TestCase, Suite
+from dataclasses import dataclass
+
+@dataclass
+class Suite:
+    name: str
+    cases: str
+
+@dataclass
+class TestCase:
+    id: str
+    prompt: str
+    scorers: list
 
 def load_suite(path: str):
     with open(path, encoding="utf-8") as f:
