@@ -1,7 +1,7 @@
-from sqlalchemy import JSON, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import ForeignKey
 import os
+from datetime import datetime
+from sqlalchemy import JSON, ForeignKey, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 class Base(DeclarativeBase):
@@ -14,9 +14,9 @@ class Run(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     suite_name: Mapped[str]
     model_name: Mapped[str]
-    model_version: Mapped[int]
-    started_at: Mapped[int]
-    finished_at: Mapped[int]
+    model_version: Mapped[str]
+    started_at: Mapped[datetime] = mapped_column(default=datetime.now)
+    finished_at: Mapped[datetime] = mapped_column(default=datetime.now)
     git_sha: Mapped[str]
 
 
@@ -26,7 +26,7 @@ class TestCase(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     suite_name: Mapped[str]
     prompt: Mapped[str]
-    metadata: Mapped[dict] = mapped_column(JSON)
+    case_metadata: Mapped[dict] = mapped_column(JSON)
     scorer_config: Mapped[dict] = mapped_column(JSON)
 
 
@@ -35,12 +35,12 @@ class Result(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     run_id: Mapped[int] = mapped_column(ForeignKey("runs.id"))
-    test_case_id: Mapped[int]
+    test_case_id: Mapped[int] = mapped_column(ForeignKey("test_cases.id"))
     raw_response: Mapped[str]
-    latency_ms: Mapped[float]
+    latency_ms: Mapped[int]
     tokens_in: Mapped[int]
     tokens_out: Mapped[int]
-    cost: Mapped[int]
+    cost: Mapped[float]
 
 
 class Score(Base):
@@ -59,7 +59,7 @@ class FailureLabel(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     result_id: Mapped[int] = mapped_column(ForeignKey("results.id"))
-    category: Mapped[list]
+    category: Mapped[str]
     note: Mapped[str]
 
 engine = create_engine(os.getenv("DATABASE_URL"), echo=True)
