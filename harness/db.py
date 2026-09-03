@@ -1,7 +1,7 @@
 from sqlalchemy import JSON, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import ForeignKey
 import os
-
 
 
 class Base(DeclarativeBase):
@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
 class Run(Base):
     __tablename__= "runs"
 
-    id: Mapped[int]
+    id: Mapped[int] = mapped_column(primary_key=True)
     suite_name: Mapped[str]
     model_name: Mapped[str]
     model_version: Mapped[int]
@@ -23,7 +23,7 @@ class Run(Base):
 class TestCase(Base):
     __tablename__= "test_cases"
 
-    id: Mapped[int]
+    id: Mapped[int] = mapped_column(primary_key=True)
     suite_name: Mapped[str]
     prompt: Mapped[str]
     metadata: Mapped[dict] = mapped_column(JSON)
@@ -33,8 +33,8 @@ class TestCase(Base):
 class Result(Base):
     __tablename__= "results"
 
-    id: Mapped[int]
-    run_id: Mapped[int]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("runs.id"))
     test_case_id: Mapped[int]
     raw_response: Mapped[str]
     latency_ms: Mapped[float]
@@ -46,8 +46,8 @@ class Result(Base):
 class Score(Base):
     __tablename__= "scores"
 
-    id: Mapped[int]
-    result_id: Mapped[int]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    result_id: Mapped[int] = mapped_column(ForeignKey("results.id"))
     scorer_name: Mapped[str]
     passed: Mapped[bool]
     score: Mapped[float]
@@ -57,10 +57,11 @@ class Score(Base):
 class FailureLabel(Base):
     __tablename__= "failure_labels"
 
-    id: Mapped[int]
-    result_id: Mapped[int]
-    category: Mapped[str]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    result_id: Mapped[int] = mapped_column(ForeignKey("results.id"))
+    category: Mapped[list]
     note: Mapped[str]
 
 engine = create_engine(os.getenv("DATABASE_URL"), echo=True)
 Base.metadata.create_all(engine)
+
