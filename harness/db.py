@@ -1,8 +1,12 @@
 from sqlalchemy import JSON, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+import os
+
+
 
 class Base(DeclarativeBase):
     pass
+
 
 class Run(Base):
     __tablename__= "runs"
@@ -15,6 +19,7 @@ class Run(Base):
     finished_at: Mapped[int]
     git_sha: Mapped[str]
 
+
 class TestCase(Base):
     __tablename__= "test_cases"
 
@@ -23,6 +28,7 @@ class TestCase(Base):
     prompt: Mapped[str]
     metadata: Mapped[dict] = mapped_column(JSON)
     scorer_config: Mapped[dict] = mapped_column(JSON)
+
 
 class Result(Base):
     __tablename__= "results"
@@ -35,6 +41,7 @@ class Result(Base):
     tokens_in: Mapped[int]
     tokens_out: Mapped[int]
     cost: Mapped[int]
+
 
 class Score(Base):
     __tablename__= "scores"
@@ -54,3 +61,6 @@ class FailureLabel(Base):
     result_id: Mapped[int]
     category: Mapped[str]
     note: Mapped[str]
+
+engine = create_engine(os.getenv("DATABASE_URL"), echo=True)
+Base.metadata.create_all(engine)
