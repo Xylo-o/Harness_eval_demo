@@ -5,6 +5,7 @@ from harness.suite import load_suite
 from harness.runner import runner
 from harness.table import print_table
 from harness.db import init_db
+from harness.store import save_run
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
     init_db()
     suite = load_suite(args.suite)
     results = runner(suite, model=args.model)
+    save_run(suite.name, args.model, "", results)
     print_table(results)
 
     tests_passed = True
