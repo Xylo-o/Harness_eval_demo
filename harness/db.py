@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 from sqlalchemy import JSON, ForeignKey, UniqueConstraint, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column 
 
 load_dotenv()
 
@@ -41,12 +41,12 @@ class Result(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     run_id: Mapped[int] = mapped_column(ForeignKey("runs.id"))
     test_case_id: Mapped[int] = mapped_column(ForeignKey("test_cases.id"))
-    timeouted: Mapped[bool] = mapped_column(default=False)
     raw_response: Mapped[str | None]
     latency_ms: Mapped[int | None]
     tokens_in: Mapped[int | None]
     tokens_out: Mapped[int | None]
     cost: Mapped[float | None]
+    error: Mapped[str | None]
 
 
 class Score(Base):
@@ -67,7 +67,6 @@ class FailureLabel(Base):
     result_id: Mapped[int] = mapped_column(ForeignKey("results.id"))
     category: Mapped[str]
     note: Mapped[str | None]
-    error: Mapped[str | None]
 
 engine = create_engine(os.getenv("DATABASE_URL", "sqlite:///harness.db"), echo=True)
 

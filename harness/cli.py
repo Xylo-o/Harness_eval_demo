@@ -4,6 +4,7 @@ import sys
 from harness.suite import load_suite
 from harness.runner import runner
 from harness.table import print_table
+from harness.db import init_db
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
 
     args = parser.parse_args()
 
+    init_db()
     suite = load_suite(args.suite)
     results = runner(suite, model=args.model)
     print_table(results)
